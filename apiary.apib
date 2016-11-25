@@ -1,0 +1,519 @@
+FORMAT: 1A
+HOST: https://github.com/kevinobee/SSC.AggregateService
+
+# SSC Aggregate Services
+
+Sitecore Services Client (SSC) Aggregate Services allow related Web API 2 controllers to be organised under a single discoverable endpoint.
+
+Aggregate Service controllers are derived from `System.Web.OData.ODataController` and [Entity Data Model](https://msdn.microsoft.com/en-us/library/ee382825(v=vs.110).aspx) (EDM) foundational concepts.
+
+## OData
+
+OData is an open protocol to allow the creation and consumption of queryable and interoperable RESTful APIs in a simple and standard way.
+
+[OData (Open Data Protocol)](http://www.odata.org/) is an [OASIS standard](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=odata) 
+that defines the best practice for building and consuming RESTful APIs. OData helps you focus on your business logic while building RESTful APIs 
+without having to worry about the approaches to define request and response headers, status codes, HTTP methods, URL conventions, media types, 
+payload formats and query options etc. OData also guides you about tracking changes, defining functions/actions for reusable procedures and 
+sending asynchronous/batch requests etc. Additionally, OData provides facility for extension to fulfill any custom needs of your RESTful APIs.
+
+
+## REST and Web API 2 References
+
+- [Using HTTP Methods for RESTful Services](http://www.restapitutorial.com/lessons/httpmethods.html)
+
+- [Routing Conventions in ASP.NET Web API 2 Odata](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-routing-conventions)
+
+
+## Service Discovery [GET /sitecore/api/ssc/aggregate]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "RouteName": "CustomRoute",
+                "Url": "sitecore/api/ssc/aggregate/custom"
+            }
+        ]
+        
+## Group Querying Entities
+
+Aggregate Services allow for the creation of OData [Read-Only Web API endpoints](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/getting-started-with-odata-in-web-api/create-a-read-only-odata-endpoint).
+
+
+## Custom Service [/aggregate/custom]
+
+The example custom aggregate service that we are going to look at it is the `custom` service.
+
+The service contains `Customers` and `Orders` [OData Collection](http://www.odata.org/documentation/odata-version-2-0/overview/) resources and a `TopBuyer` [OData Function](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-v4/odata-actions-and-functions).
+
+### Custom Service API Root [GET]
+
+Request the root of the custom aggregate service to discover service endpoints
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+            "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/custom/$metadata",
+            "value": 
+            [
+                {
+                    "name": "Customers",
+                    "kind": "EntitySet",
+                    "url": "Customers"
+                },
+                {
+                    "name": "Orders",
+                    "kind": "EntitySet",
+                    "url": "Orders"
+                },
+                {
+                    "name": "TopBuyer",
+                    "kind": "FunctionImport",
+                    "url": "TopBuyer"
+                }
+            ]
+        }
+        
+        
+### Root Request Metadata [GET /aggregate/custom/$metadata]
+
+Request the EDM metadata for the custom aggregate service
+
++ Response 200 (application/xml)
+
+        <?xml version="1.0" encoding="utf-8"?>
+        <edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+            <edmx:DataServices>
+                <Schema Namespace="CustomService.Model" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                    <EntityType Name="Customer">
+                        <Key>
+                            <PropertyRef Name="Id" />
+                        </Key>
+                        <Property Name="Name" Type="Edm.String" Nullable="false" />
+                        <Property Name="Id" Type="Edm.String" Nullable="false" />
+                        <Property Name="Url" Type="Edm.String" />
+                        <NavigationProperty Name="Orders" Type="Collection(CustomService.Model.Order)" />
+                    </EntityType>
+                    <EntityType Name="Order">
+                        <Key>
+                            <PropertyRef Name="Id" />
+                        </Key>
+                        <Property Name="Description" Type="Edm.String" Nullable="false" />
+                        <Property Name="PurchaseTimestamp" Type="Edm.DateTimeOffset" Nullable="false" />
+                        <Property Name="Id" Type="Edm.String" Nullable="false" />
+                        <Property Name="Url" Type="Edm.String" />
+                    </EntityType>
+                    <Function Name="TopBuyer">
+                        <ReturnType Type="CustomService.Model.Customer" />
+                    </Function>
+                    <Function Name="TopBuyer" IsBound="true">
+                        <Parameter Name="bindingParameter" Type="Collection(CustomService.Model.Customer)" />
+                        <ReturnType Type="CustomService.Model.Customer" />
+                    </Function>
+                    <EntityContainer Name="Container">
+                        <EntitySet Name="Customers" EntityType="CustomService.Model.Customer">
+                            <NavigationPropertyBinding Path="Orders" Target="Orders" />
+                        </EntitySet>
+                        <EntitySet Name="Orders" EntityType="CustomService.Model.Order" />
+                        <FunctionImport Name="TopBuyer" Function="CustomService.Model.TopBuyer" EntitySet="Customers" IncludeInServiceDocument="true" />
+                    </EntityContainer>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>
+
+
+### Customers Collection [GET /aggregate/custom/Customers]
+
+Request the contents of the `Customers` collection.
+
++ Response 200 (application/json)
+
+        {
+            "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/custom/$metadata#Customers",
+            "value": 
+            [
+                {
+                    "Name": "Fred Smith",
+                    "Id": "cc564bd0-153f-450f-b04a-9d3cd76d5abd",
+                    "Url": null
+                },
+                {
+                    "Name": "Pete Best",
+                    "Id": "ed3c9c97-cada-4613-81d2-1df3956e1736",
+                    "Url": null
+                }
+            ]
+        }
+        
+
+### Filtered Customers Collection [GET /aggregate/custom/Customers?$expand=Orders]
+
+An example of using the [OData `$expand` filter](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/using-select-expand-and-value) 
+to pull in referenced `Orders` for `Customers`.
+
++ Response 200 (application/json)
+
+        {
+            "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/custom/$metadata#Customers",
+            "value": 
+            [
+                {
+                    "Name": "Fred Smith",
+                    "Id": "cc564bd0-153f-450f-b04a-9d3cd76d5abd",
+                    "Url": null,
+                    "Orders": 
+                    [
+                        {
+                            "Description": "first order",
+                            "PurchaseTimestamp": "2016-09-16T13:34:35.9191742+01:00",
+                            "Id": "65015b60-b5d8-4097-aeef-310c6da10443",
+                            "Url": null
+                        }
+                    ]
+                },
+                {
+                    "Name": "Pete Best",
+                    "Id": "ed3c9c97-cada-4613-81d2-1df3956e1736",
+                    "Url": null,
+                    "Orders": 
+                    [
+                        {
+                            "Description": "second order",
+                            "PurchaseTimestamp": "2016-05-21T13:34:35.9201786+01:00",
+                            "Id": "3a59e433-9ad7-4cfc-b040-ae6b6116c884",
+                            "Url": null
+                        },
+                        {
+                            "Description": "third order",
+                            "PurchaseTimestamp": "2016-09-07T13:34:35.9201786+01:00",
+                            "Id": "353d7e7b-9d4b-401b-9614-80062cb65454",
+                            "Url": null
+                        }
+                    ]
+                }
+            ]
+        }
+
+    
+### Read Single Customer [GET /aggregate/custom/Customers('{id}')]
+
+Retrieve a single customer by ID from the `Customers` collection.
+
++ Parameters
+
+ + id (required, string, `cc564bd0-153f-450f-b04a-9d3cd76d5abd`) ... An unique identifier of the resource.
+
++ Response 200 (application/json)
+
+        {
+            "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/custom/$metadata#Customers/$entity",
+            "Name": "Fred Smith",
+            "Id": "cc564bd0-153f-450f-b04a-9d3cd76d5abd",
+            "Url": null
+        }
+
++ Response 404
+
+
+### Orders Collection [GET /aggregate/custom/Orders]
+
+Request the contents of the `Orders` collection.
+
++ Response 200 (application/json)
+
+        {
+            "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/custom/$metadata#Orders",
+            "value": 
+            [
+                {
+                    "Description": "first order",
+                    "PurchaseTimestamp": "2016-09-16T13:34:35.9191742+01:00",
+                    "Id": "65015b60-b5d8-4097-aeef-310c6da10443",
+                    "Url": null
+                },
+                {
+                    "Description": "second order",
+                    "PurchaseTimestamp": "2016-05-21T13:34:35.9201786+01:00",
+                    "Id": "3a59e433-9ad7-4cfc-b040-ae6b6116c884",
+                    "Url": null
+                },
+                {
+                    "Description": "third order",
+                    "PurchaseTimestamp": "2016-09-07T13:34:35.9201786+01:00",
+                    "Id": "353d7e7b-9d4b-401b-9614-80062cb65454",
+                    "Url": null
+                }
+            ]
+        }
+        
+
+
+### TopBuyer Function [GET /aggregate/custom/Customers/CustomService.Model.TopBuyer]
+
+Invokes the TopBuyer custom OData Function bound to the `Customers` collection.
+
++ Response 200 (application/json)
+
+        {
+            "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/custom/$metadata#Customers/$entity",
+            "Name": "Pete Best",
+            "Id": "ed3c9c97-cada-4613-81d2-1df3956e1736",
+            "Url": null
+        }       
+
++ Response 404
+
+
+## Group Creating, Updating, and Deleting Entities
+
+## Admin Service [/aggregate/admin]
+
+The example custom aggregate service that we are going to look at it for Creating, Updating, and Deleting Entities is the `admin` service.
+
+The service contains a single `Todo` OData collection resource. The service metadata shows the structure of the 'Todo' entity.
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:DataServices>
+        <Schema Namespace="CustomService.Model" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityType Name="Todo">
+                <Key>
+                    <PropertyRef Name="Id" />
+                </Key>
+                <Property Name="Title" Type="Edm.String" />
+                <Property Name="Completed" Type="Edm.Boolean" Nullable="false" />
+                <Property Name="Index" Type="Edm.Int32" Nullable="false" />
+                <Property Name="Id" Type="Edm.String" Nullable="false" />
+                <Property Name="Url" Type="Edm.String" />
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="Todo" EntityType="CustomService.Model.Todo" />
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
+```
+
+
+### Add Item to Collection [POST /aggregate/admin/Todo]
+
++ Request (application/json)
+
+        {
+            "Title": "First Task",
+            "Completed": false,
+            "Index": 4,
+            "Id": "1",
+            "Url": null
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo('1')
+
+    + Body
+
+            {
+                "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/$metadata#Todo/$entity",
+                "Title": "First Task",
+                "Completed": false,
+                "Index": 4,
+                "Id": "1",
+                "Url": null
+            }
+
++ Response 400 (application/json)
+
+            {
+                "error": 
+                {
+                    "code": "",
+                    "message": "The request is invalid.",
+                    "innererror": 
+                    {
+                        "message": "entity : The property 'MyField' does not exist on type 'CustomService.Model.Todo'. Make sure to only use property names that are defined by the type.\r\n",
+                        "type": "",
+                        "stacktrace": ""
+                    }
+                }
+            }
+
++ Response 409
+
+
+### Update an Item [PUT /aggregate/admin/Todo('{id}')]
+
+Aggregate Services do not support the use of the `PUT` verb to create a new item if the item does not already exist in the entity collection. 
+
+Use the `POST` verb for the purpose of creating entities.
+
++ Parameters
+
+ + id (required, string, `cc564bd0-153f-450f-b04a-9d3cd76d5abd`) ... An unique identifier of the resource.
+
++ Request (application/json)
+
+        {
+            "Title": "Renamed First Task",
+            "Completed": true,
+            "Index": 4,
+            "Id": "1",
+            "Url": null
+        }
+
+
++ Response 204
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "error": 
+                {
+                    "code": "",
+                    "message": "Missing model Id property"
+                }
+            }
+
++ Response 404
+
+
+### Update a Collection [PUT /aggregate/admin/Todo]
+
+Aggregate Services do not support the use of the `PUT` verb to update the contents of an entire entity collection. 
+
++ Request (application/json)
+
+        {
+            "Title": "Renamed First Task",
+            "Completed": true,
+            "Index": 4,
+            "Id": "1",
+            "Url": null
+        }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "error": 
+                {
+                    "code": "",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo'.",
+                    "innererror": 
+                    {
+                        "message": "No routing convention was found to select an action for the OData path with template '~/entityset'.",
+                        "type": "",
+                        "stacktrace": ""
+                    }
+                }
+            }
+
+### Partial Update of an Item [PATCH /aggregate/admin/Todo('{id}')]
+
+Attempts to perform a partial update on a single item in the `Todo` collection.
+
+The `PATCH` verb is not supported by Aggregate Services in the current SSC release.
+
++ Parameters
+
+ + id (required, string, `cc564bd0-153f-450f-b04a-9d3cd76d5abd`) ... An unique identifier of the resource.
+
++ Request (application/json)
+
+        {
+            "Id": "1",
+            "Title":"Updated with Patch request"
+        }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "error": 
+                {
+                    "code": "",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo('1')'.",
+                    "innererror": 
+                    {
+                        "message": "No routing convention was found to select an action for the OData path with template '~/entityset/key'.",
+                        "type": "",
+                        "stacktrace": ""
+                    }
+                }
+            }
+
+### Partial Update on a Collection [PATCH /aggregate/admin/Todo]
+
+Aggregate Services do not support the use of the `PATCH` verb to update the contents of an entire entity collection. 
+
++ Request (application/json)
+
+        {
+            "Title": "Renamed First Task",
+            "Completed": true,
+            "Index": 4,
+            "Id": "1",
+            "Url": null
+        }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "error": 
+                {
+                    "code": "",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo'.",
+                    "innererror": 
+                    {
+                        "message": "No routing convention was found to select an action for the OData path with template '~/entityset'.",
+                        "type": "",
+                        "stacktrace": ""
+                    }
+                }
+            }
+
+
+### Delete an Item [DELETE /aggregate/admin/Todo('{id}')]
+
++ Parameters
+
+ + id (required, string, `cc564bd0-153f-450f-b04a-9d3cd76d5abd`) ... An unique identifier of the resource.
+
++ Response 204
+
++ Response 404
+
+
+### Delete a Collection [DELETE /aggregate/admin/Todo]
+
+Aggregate Services do not support the use of the `DELETE` verb toremove the contents of an entire entity collection. 
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "error": 
+                {
+                    "code": "",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo'.",
+                    "innererror": 
+                    {
+                        "message": "No routing convention was found to select an action for the OData path with template '~/entityset'.",
+                        "type": "",
+                        "stacktrace": ""
+                    }
+                }
+            }
