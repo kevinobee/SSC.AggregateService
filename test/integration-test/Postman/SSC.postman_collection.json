@@ -1,0 +1,193 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SSC",
+		"_postman_id": "12b5e045-c04d-2df7-69ab-1392e0140227",
+		"description": "Test collection to validate SSC Web API behaviours.\n\nRequires the CustomService.Sample.dll in the target webiste (from Sitecore.Services.Client repos)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Aggregate Services",
+			"description": "Behavioural tests for OData enabled services",
+			"item": [
+				{
+					"name": "Discovering Aggregate Services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "List OData based Aggregate services registered with SSC"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"description": "",
+			"item": [
+				{
+					"name": "Login over HTTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 500\"] = responseCode.code === 500;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/auth/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;odata.metadata=minimal",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"domain\": \"sitecore\",\n  \"username\": \"admin\",\n  \"password\": \"b\"\n}"
+						},
+						"description": "Request should fail.\n\nIf customErrors in web.config mode=\"Off\" the diagnostic Requires SSL message will be returned in the body."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/auth/logout",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;odata.metadata=minimal",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Item Service",
+			"description": "Item Service Behavioural Tests",
+			"item": []
+		},
+		{
+			"name": "Metadata",
+			"description": "Metadata script controller tests",
+			"item": [
+				{
+					"name": "Metadata - Missing Script Param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Bad Request\"] = responseCode.code === 400;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/script/metadata",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "/sitecore/api/ssc/script/metadata request\n\nExpect Bad Request as scripts parameter is missing"
+					},
+					"response": []
+				},
+				{
+					"name": "Metadata - Script Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Bad Request\"] = responseCode.code === 404;",
+									"",
+									"tests[\"Content-Type is text/html\"] = postman.getResponseHeader(\"Content-Type\").has(\"text/html\")",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/script/metadata?scripts=foo,bar",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "/sitecore/api/ssc/script/metadata?scripts request\n\nExpect 404 Not Found for missing scripts"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

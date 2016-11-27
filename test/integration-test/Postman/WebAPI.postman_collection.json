@@ -1,0 +1,40 @@
+{
+	"variables": [],
+	"info": {
+		"name": "WebAPI",
+		"_postman_id": "0c402f65-a201-f9a8-8448-9a36ba0b6a97",
+		"description": "Tests on Web API behaviours",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Web API Unhandled Exception",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"Status code is Internal Server Error\"] = responseCode.code === 500;\n\ntests[\"Body contains exception message\"] = responseBody.has(\"An error has occurred.\");\n"
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{host}}/api/books/exception",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json;",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "Throw an unhandled exception from a controller action method.\n\nStack trace information will be displayed if CustomErrors configuration setting permits"
+			},
+			"response": []
+		}
+	]
+}

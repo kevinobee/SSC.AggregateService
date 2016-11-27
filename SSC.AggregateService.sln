@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1BDAE08E-470A-4725-8D8C-5F25ACB188AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{6C12A069-AB6C-4BB5-ABA2-0FCC4E7CFB6E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1DD444F2-D6DA-4F97-AD71-B27870FA1F97}"
+	ProjectSection(SolutionItems) = preProject
+		src\Common\CommonAssemblyInfo.cs = src\Common\CommonAssemblyInfo.cs
+		src\Common\GlobalSuppressions.cs = src\Common\GlobalSuppressions.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{31DF04A0-1AB0-4A4B-8123-91E2ED6B88F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unit-test", "unit-test", "{DFE86CD1-57A7-48AD-A20A-9120B580D140}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "src\Build\Build.csproj", "{59F3AECD-B9BB-45F0-8DFA-EAA0A12B29D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "features", "features", "{0942E65D-7AC5-4691-94E5-92319A59A0C6}"
+	ProjectSection(SolutionItems) = preProject
+		doc\features\Aggregate Services - Getting-Started.md = doc\features\Aggregate Services - Getting-Started.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration-test", "integration-test", "{31C8A9AA-182F-4319-8AD9-9D090D2895BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman", "Postman", "{B30A0AF4-1095-4F65-9032-27753B753330}"
+	ProjectSection(SolutionItems) = preProject
+		test\integration-test\Postman\Local-Dev.postman_environment.json = test\integration-test\Postman\Local-Dev.postman_environment.json
+		test\integration-test\Postman\SSC.Aggregate.postman_collection.json = test\integration-test\Postman\SSC.Aggregate.postman_collection.json
+		test\integration-test\Postman\SSC.postman_collection.json = test\integration-test\Postman\SSC.postman_collection.json
+		test\integration-test\Postman\WebAPI.postman_collection.json = test\integration-test\Postman\WebAPI.postman_collection.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API documentation", "API documentation", "{202619A3-70FB-4ACA-B722-C331DA03CEF8}"
+	ProjectSection(SolutionItems) = preProject
+		apiary.apib = apiary.apib
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomService.Sample", "src\CustomService.Sample\CustomService.Sample.csproj", "{7B3C6B9C-4504-43B3-AAB7-F6AFE8BF371E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59F3AECD-B9BB-45F0-8DFA-EAA0A12B29D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F3AECD-B9BB-45F0-8DFA-EAA0A12B29D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F3AECD-B9BB-45F0-8DFA-EAA0A12B29D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F3AECD-B9BB-45F0-8DFA-EAA0A12B29D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3C6B9C-4504-43B3-AAB7-F6AFE8BF371E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3C6B9C-4504-43B3-AAB7-F6AFE8BF371E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3C6B9C-4504-43B3-AAB7-F6AFE8BF371E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3C6B9C-4504-43B3-AAB7-F6AFE8BF371E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1DD444F2-D6DA-4F97-AD71-B27870FA1F97} = {1BDAE08E-470A-4725-8D8C-5F25ACB188AB}
+		{DFE86CD1-57A7-48AD-A20A-9120B580D140} = {31DF04A0-1AB0-4A4B-8123-91E2ED6B88F0}
+		{59F3AECD-B9BB-45F0-8DFA-EAA0A12B29D4} = {1BDAE08E-470A-4725-8D8C-5F25ACB188AB}
+		{0942E65D-7AC5-4691-94E5-92319A59A0C6} = {6C12A069-AB6C-4BB5-ABA2-0FCC4E7CFB6E}
+		{31C8A9AA-182F-4319-8AD9-9D090D2895BB} = {31DF04A0-1AB0-4A4B-8123-91E2ED6B88F0}
+		{B30A0AF4-1095-4F65-9032-27753B753330} = {31C8A9AA-182F-4319-8AD9-9D090D2895BB}
+		{202619A3-70FB-4ACA-B722-C331DA03CEF8} = {6C12A069-AB6C-4BB5-ABA2-0FCC4E7CFB6E}
+		{7B3C6B9C-4504-43B3-AAB7-F6AFE8BF371E} = {1BDAE08E-470A-4725-8D8C-5F25ACB188AB}
+	EndGlobalSection
+EndGlobal

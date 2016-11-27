@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildProjectDirectory)\elapsed-time.targets" />
+  
+  <UsingTask AssemblyFile="$(MSBuildExtensionPack)"
+             TaskName="MSBuild.ExtensionPack.Xml.XmlFile" />
+          
+  <Target Name="WarmUpWebsite"
+          BeforeTargets="RunPostmanCollection">
+
+    <CallTarget Targets="BeforeWebsiteDeploy" />
+    
+    <Exec Command="$(CurlExePath) $(TestWebsiteUrl)" />
+    
+    <CallTarget Targets="AfterWebsiteDeploy" />
+
+  </Target>
+
+  <Target Name="RunPostmanCollection">
+     
+    <Message Text="Running Postman Acceptance Tests" />
+
+    <PropertyGroup Condition="'$(PostmanEnvironment)' == ''">
+      <PostmanEnvironment>Local-Dev</PostmanEnvironment>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PostmanCollection Include="$(ProjectRoot)\test\integration-test\**\*.postman_collection.json" />
+    </ItemGroup>
+    
+    <PropertyGroup>
+      <PostmanEnvironmentFile>$(ProjectRoot)\test\integration-test\Postman\$(PostmanEnvironment).postman_environment.json</PostmanEnvironmentFile>
+      <NewmanParams>--timeout-request 180000 --ignore-redirects --reporters cli,junit </NewmanParams>
+    </PropertyGroup>
+    
+    <Error Condition="! Exists('$(PostmanEnvironmentFile)')" 
+           Text="Missing Postman environment file - '$(PostmanEnvironmentFile)'" />
+
+    <Exec Command="newman run %(PostmanCollection.Identity) -e $(PostmanEnvironmentFile) --reporter-junit-export $(TestResultsPath)\%(PostmanCollection.Filename).xml $(NewmanParams)" />
+
+  </Target>
+
+  <Target Name="PreparePostmanRunner"
+          BeforeTargets="RunPostmanCollection">
+          
+        <Exec Command="newman --version" ConsoleToMSBuild="True">
+          <Output TaskParameter="ConsoleOutput" PropertyName="NewmanVersion" />
+        </Exec>
+    
+        <Exec Condition="$(NewmanVersion)  == ''"
+              Command="npm install -g newman@v3.0.1" />
+  
+  </Target>
+  
+  <Target Name="SmokeTest">
+
+    <Message Text="Validate known Sitecore Services endpoints" 
+             Importance="high" />
+
+    <CallTarget Targets="RunPostmanCollection" />
+
+  </Target>
+
+</Project>

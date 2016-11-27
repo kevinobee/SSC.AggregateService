@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+      
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="$(MSBuildProjectDirectory)\buildInitial.props" />
+  
+    <Import Project="$(MSBuildProjectDirectory)\environment.props"
+            Condition="Exists('$(MSBuildProjectDirectory)\environment.props')" />
+  
+    <Import Project="$(MSBuildProjectDirectory)\build.props" />
+
+    <Import Project="$(MSBuildProjectDirectory)\smokeTests.targets" />
+
+    <UsingTask AssemblyFile="$(XunitExePath)"
+               TaskName="Xunit.Runner.MSBuild.xunit" />
+
+    <Target Name="Clean"
+            BeforeTargets="Init">
+    
+        <RemoveDir Directories="$(ArtifactsPath)" 
+                   Condition="Exists('$(ArtifactsPath)')" 
+                   ContinueOnError="true" />
+	
+    </Target>
+
+    <Target Name="Init">
+	    
+        <MakeDir Directories="$(ArtifactsPath)" 
+                 Condition="!Exists('$(ArtifactsPath)')" />
+		 
+        <MakeDir Directories="$(AnalysisResultsPath)" 
+                 Condition="!Exists('$(AnalysisResultsPath)')" />
+		 
+        <MakeDir Directories="$(PackageResultsPath)" 
+                 Condition="!Exists('$(PackageResultsPath)')" />
+		 
+        <MakeDir Directories="$(TestResultsPath)" 
+                 Condition="!Exists('$(TestResultsPath)')" />
+        
+    </Target>
+
+    <Target Name="PackageRestore"
+            BeforeTargets="Build"
+            Condition="Exists('$(NugetExe)')">
+            
+        <Exec Command="$(NugetExe) restore $(SolutionFile) $(NugetConfigParam)" />
+        
+    </Target>
+
+    <Target Name="EnsureDependencies" 
+            BeforeTargets="PackageRestore">
+        
+        <Error
+            Text="NugetExe environment variable is not set"
+            Condition="'$(NugetExe)' == ''" />
+          
+        <Error
+            Text="NugetExe '$(NugetExe)' does not exist on the file system"
+            Condition="! Exists('$(NugetExe)')" /> 
+        
+    </Target>    
+ 
+    <Target Name="ReportVersionInfo">
+      
+      <Message Text="Component                : $(ProjectName)"
+               Importance="High" />
+      <Message Text="SourcePath               : $(SourcePath)" />
+      <Message Text="PackagesPath             : $(PackagesPath)" />
+      <Message Text="SolutionFile             : $(SolutionFile)" />
+     
+      <Message Text="Test Environment" 
+               Importance="High" />
+       
+      <Message Text="TestWebsiteUrl           : '$(TestWebsiteUrl)'" />      
+      <Message Text="TestWebsitePath          : '$(TestWebsitePath)'" />      
+            
+    </Target>
+    
+    <Target Name="RunUnitTests">
+
+        <ItemGroup>
+            <TestAssemblies Include="$(UnitTestSelector)" />
+        </ItemGroup>
+
+        <Warning Text="No test assemblies found = $(UnitTestSelector)"
+                Condition="'@(TestAssemblies->Count())' &lt; 1" />
+
+        <xunit Assemblies="@(TestAssemblies)" 
+               Xml="$(OutputXmlFile)" 
+               NoLogo="true"
+               Condition="'@(TestAssemblies->Count())' &gt; 0" />
+
+    </Target>
+
+    <Target Name="NugetPack">
+        
+        <ItemGroup>
+            <NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+        </ItemGroup>
+      
+        <Exec Command="$(GitVersionExePath) /output json /showvariable NuGetVersionV2" ConsoleToMSBuild="True">
+          <Output TaskParameter="ConsoleOutput" PropertyName="NuGetVersion" />
+        </Exec>
+        
+        <Exec Command="$(NugetExe) pack %(NuspecFiles.Identity) -Verbosity detailed -Version $(NuGetVersion) -OutputDirectory $(PackageResultsPath)"/>
+    
+    </Target>
+
+    <Target Name="IntegrationTests"
+            DependsOnTargets="Build; NugetPack">
+        
+        <ItemGroup>
+            <IntegrationTestAssemblies 
+                Include="$(ProjectRoot)\test\integration-test\**\bin\$(Configuration)\*Integration.Test.dll"
+                Exclude="$(ProjectRoot)\test\unit-test\**\*.Test.dll" />
+        </ItemGroup>
+        
+        <PropertyGroup>
+            <IntegrationTestResults>$(OutputIntegrationXmlFile)</IntegrationTestResults>
+        </PropertyGroup>
+
+        <xunit Condition="'@(IntegrationTestAssemblies->Count())' &gt; 0"
+	       Assemblies="@(IntegrationTestAssemblies)"
+               Xml="$(IntegrationTestResults)"
+               NoLogo="true" />
+        
+    </Target>
+ 
+    <Target Name="DeployClientSite" >
+      
+      <Error Condition="'$(PublishProfile)' == ''" Text="No PublishProfile set" />
+            
+      <MSBuild Projects="$(SolutionFile)"
+               Properties="DeployOnBuild=true;PublishProfile=$(PublishProfile)" />
+
+    </Target>
+  
+  
+    <!-- CI Build Integration Targets - Version, Build, Test, Analyze, Package -->
+
+    <Target Name="Version"
+            BeforeTargets="Init">
+        
+        <CallTarget Targets="ReportVersionInfo" />
+    
+    </Target> 
+    
+    <Target Name="Build"
+            DependsOnTargets="Init" >
+            
+        <Message Text="Project Root = $(ProjectRoot)" />
+
+        <MSBuild Projects="$(SolutionFile)"
+                 Targets="Build"
+                 Properties="Configuration=$(Configuration);OutDir=$(BuildDestinationDir);NuGetExePath=$(NugetExe);RestoreConfigFile=$(NugetConfig);RunCodeAnalysis=true"
+                 BuildInParallel="True"
+                 />
+        
+    </Target>
+    
+    <Target Name="Test">
+    
+        <CallTarget Targets="RunUnitTests" />
+    
+    </Target>   
+    
+    <Target Name="Package">
+        
+        <CallTarget Targets="IntegrationTests" />
+      
+        <CallTarget Targets="DeployClientSite" />
+      
+        <CallTarget Targets="SmokeTest" />
+    
+    </Target>
+
+    <Target Name="Full" 
+            DependsOnTargets="Build; Test; Package">
+            
+            <!-- Fire dependencies to initiate a full build -->
+            
+    </Target>
+
+</Project>
