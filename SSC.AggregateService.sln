@@ -25,6 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "src\Build\Build.cs
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "features", "features", "{0942E65D-7AC5-4691-94E5-92319A59A0C6}"
 	ProjectSection(SolutionItems) = preProject
+		doc\features\Aggregate-Services-Code-Examples.md = doc\features\Aggregate-Services-Code-Examples.md
 		doc\features\Aggregate-Services-Getting-Started.md = doc\features\Aggregate-Services-Getting-Started.md
 	EndProjectSection
 EndProject

@@ -35,7 +35,7 @@ Example:
     }
 ```
 
-Note: Following OData convention the controller name is always a pluralised version of the model name. 
+Note: Following OData convention the controller name is always a pluralized version of the model name. 
 
 Note: The in the example above we rely on DI to select the appropriate implementation of the repository.
 
@@ -61,3 +61,12 @@ Note: Lifetime chosen for repository is dependent on nature of service. Here Sin
 Create a class that derives from `Sitecore.Services.Core.OData.AggregateDescriptor`. Use the base constructor to specify your EdmModelBuilder.
 
 Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes your service (or for simple service aggregates use the `DefaultEdmModelBuilder`). 
+
+
+## SSC Aggregate Services: References
+
+## 1. **API Documentation** is available [online](http://bit.ly/ssc-docs-aggregate).
+
+    The API documentation site also provides users with the chance to interact with a mock of the API and inspect recent traffic sent to this API mock.
+
+2. **Code Examples** can be found in the [SSC.AggregateService project](http://bit.ly/ssc-aggregate) on GitHub. For further details refer to the [Aggregate Services Code Examples](Aggregate-Services-Code-Examples.md) documentation.

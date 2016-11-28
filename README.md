@@ -5,7 +5,7 @@ A community repository that provides API documentation for the [Sitecore Service
 
 ## The API is Online
 
-The Sitecore Services Client [Aggregate Service documentation](http://docs.sscaggregateservice.apiary.io/) can be found on [Apiary](https://apiary.io/).
+The Sitecore Services Client [Aggregate Service documentation](http://bit.ly/ssc-docs-aggregate) can be found on [Apiary](https://apiary.io/).
 
 
 ## Developing with SSC and OData
@@ -17,6 +17,8 @@ The [Getting started with Aggregate Services](doc\features\Aggregate-Services-Ge
 * Model(s)
 * Service Controller(s)
 * Read-Only Repository classes
+
+For further details refer to the [Aggregate Services Code Examples](doc\features\Aggregate-Services-Code-Examples.md) documentation.
 
 
 ## Contributing to the Project
