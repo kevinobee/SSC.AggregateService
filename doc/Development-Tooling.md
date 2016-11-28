@@ -31,6 +31,26 @@ Intialising Gitflow for the repository is required if you wish to work with this
 
 The connection strings in the website are setup to access [Mongo](https://docs.mongodb.com/) via a [Docker](https://www.docker.com/) container.
 
+The `Website\App_Config\ConnectionStrings.config` file should have the Mongo connection strings configured as shown below:
+
+```
+    <?xml version="1.0" encoding="utf-8"?>
+    <connectionStrings>
+        <!-- 
+            Sitecore connection strings.
+            All database connections for Sitecore are configured here.
+        -->
+        <add name="core" connectionString=" ... " />
+        <add name="master" connectionString=" ... " />
+        <add name="web" connectionString=" ... " />
+        <add name="analytics" connectionString="mongodb://mongo:27017/ssc_aggregate_analytics" />
+        <add name="tracking.live" connectionString="mongodb://mongo:27017/ssc_aggregate_tracking_live" />
+        <add name="tracking.history" connectionString="mongodb://mongo:27017/ssc_aggregate_tracking_history" />
+        <add name="tracking.contact" connectionString="mongodb://mongo:27017/ssc_aggregate_tracking_contact" />
+        <add name="reporting" connectionString=" ... " />
+    </connectionStrings>
+```
+
 To setup this configuration execute the following from the Docker Quickstart Terminal:
 
 ```
