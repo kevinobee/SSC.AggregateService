@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <!--
+  This shows how you can calculate the elapsed time in MSBuild
+  -->
+  
+  <Target Name="BeforeWebsiteDeploy">
+    <PropertyGroup>
+      <StartTicks>$([System.DateTime]::UtcNow.Ticks)</StartTicks>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="AfterWebsiteDeploy">
+    
+    <PropertyGroup>
+      <FinishTicks>$([System.DateTime]::UtcNow.Ticks)</FinishTicks>
+      <ElapsedTicks>$([MSBuild]::Subtract($(FinishTicks), $(StartTicks)))</ElapsedTicks>
+      <Elapsed>$([System.TimeSpan]::FromTicks($(ElapsedTicks)).TotalSeconds)</Elapsed>
+    </PropertyGroup>
+    
+    <Message Text="Elapsed time: $(Elapsed) seconds"
+             Importance="high" />
+    
+  </Target>
+  
+</Project>

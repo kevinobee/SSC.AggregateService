@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    
+    <!-- Define paths relative to MSBuildProjectDirectory -->
+    <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
+    <AnalysisResultsPath>$(ArtifactsPath)\CodeAnalysis</AnalysisResultsPath>
+    <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
+    <BuildDestinationDir>$(BuildResultsPath)\lib\net45</BuildDestinationDir>
+    <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
+    <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
+    <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
+    <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
+    <OutputIntegrationXmlFile>$(TestResultsPath)\Integration.TestResults.xml</OutputIntegrationXmlFile>
+    <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
+    
+    <!-- Repos layout definitions -->
+    <PackagingPath Condition="$(PackagingPath) == ''">$(MSBuildProjectDirectory)\packaging</PackagingPath>
+    <SourcePath Condition="$(SourcePath) == ''">$(ProjectRoot)\src</SourcePath>
+    <PackagesPath Condition="$(PackagesPath) == ''">$(ProjectRoot)\packages</PackagesPath>
+    <SolutionFile Condition="$(SolutionFile) == ''">$(ProjectRoot)\$(ProjectName).sln</SolutionFile>
+    <UnitTestSelector Condition="$(UnitTestSelector) == ''">$(ProjectRoot)\test\unit-test\**\bin\$(Configuration)\*.Test.dll</UnitTestSelector>
+
+
+    <!-- Optionally override tooling paths with CI server Environment variables -->
+    <NugetExe Condition="$(NugetExe) == '' ">$(PackagesPath)\NuGet.CommandLine.3.4.3\tools\nuget.exe</NugetExe>
+    <NugetConfig Condition="$(NugetConfig) == '' ">$(SourcePath)\build\nuget\NuGet.config</NugetConfig>
+   
+    <!-- Define build project dependencies path -->
+    <CurlPath>$(PackagesPath)\curl.7.30.0.2\tools\native\v110\x64\Release\ltcg</CurlPath>
+    <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
+    <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
+    <GitVersionExePath>$(PackagesPath)\\GitVersion.CommandLine.3.6.5\tools\GitVersion.exe</GitVersionExePath>
+    <XunitExePath>$(PackagesPath)\xunit.runner.msbuild.2.1.0\build\portable-net45+win8+wp8+wpa81\xunit.runner.msbuild.dll</XunitExePath>   
+    <NugetConfigParam> -ConfigFile $(NugetConfig)</NugetConfigParam>
+
+  </PropertyGroup>
+  
+    <!-- Provide defaults for values for environment properties if environment.props is not present -->
+  <PropertyGroup>
+    <SiteName>ssc.aggregate</SiteName>
+    <TestWebsitePath Condition="$(TestWebsitePath) == ''">C:\Websites\$(SiteName)\Website</TestWebsitePath>
+    <TestWebsiteUrl Condition="$(TestWebsiteUrl) == ''">http://$(SiteName)/</TestWebsiteUrl>
+    <PublishProfile Condition="$(PublishProfile) == ''">$(SiteName).pubxml</PublishProfile>
+    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+  </PropertyGroup>
+</Project>

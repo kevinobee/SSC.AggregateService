@@ -1,0 +1,561 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SSC.Aggregate",
+		"_postman_id": "d25f4aa6-f633-b95a-6d8f-1b213ec1ed12",
+		"description": "\tTest the Sample features within the SSC.Aggregate package",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 Service Discovery",
+			"description": "",
+			"item": [
+				{
+					"name": "CustomService.Sample Services Included",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"tests[\"Admin aggregate service in response\"] = responseBody.has(\"sitecore/api/ssc/aggregate/admin\");",
+									"",
+									"tests[\"Custom aggregate service in response\"] = responseBody.has(\"sitecore/api/ssc/aggregate/custom\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Check that the Aggregate services includer the following services defined in the CustomService.Sample assembly:\n\n* Admin\n* Custom"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02 Root Request to Each Aggregate Service",
+			"description": "",
+			"item": [
+				{
+					"name": "Root Request to Admin Service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									" ",
+									"if (data !== null) ",
+									"{",
+									"  if (data.value.length < 1)",
+									"  {",
+									"    tests[\"Todo EntitySet present\"] = false;",
+									"  }",
+									"  else",
+									"  {",
+									"    tests[\"Todo EntitySet defined\"] = data.value[0].name === \"TodoList\";",
+									"  }",
+									"}",
+									"else ",
+									"{",
+									"  tests[\"Body has value\"] = false;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;odata.metadata=full",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Request the root of the admin aggregate service to discover service endpoints"
+					},
+					"response": []
+				},
+				{
+					"name": "Root Request to Custom Service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									" ",
+									"if (data !== null) ",
+									"{",
+									"  if (data.value.length < 1)",
+									"  {",
+									"    tests[\"Customers EntitySet present\"] = false;",
+									"  }",
+									"  else",
+									"  {",
+									"    tests[\"Customers EntitySet defined\"] = data.value[0].name === \"Customers\";",
+									"  }",
+									"  ",
+									"  if (data.value.length < 2)",
+									"  {",
+									"    tests[\"Orders EntitySet present\"] = false;",
+									"  }",
+									"  else",
+									"  {",
+									"    tests[\"Orders EntitySet defined\"] = data.value[1].name === \"Orders\";",
+									"  }",
+									"}",
+									"else ",
+									"{",
+									"  tests[\"Body has value\"] = false;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;odata.metadata=full",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Request the root of the custom aggregate service to discover service endpoints"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03 Custom Service",
+			"description": "Behavioural tests for OData enabled services.\n\nTesting only the Query (Read) operations on the controller.  This is inline with the Sitecore 8.2 initial release behaviour.",
+			"item": [
+				{
+					"name": "Viwe Custom Service Metadata",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\");",
+									"",
+									"tests[\"Content-Type is present\"] = contentType !== null;",
+									"",
+									"tests[\"Content-Type is application/xml\"] = contentType === \"application/xml\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/$metadata",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;odata.metadata=full",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Request the EDM metadata for the custom aggregate service"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+									" ",
+									"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+									" ",
+									"if (contentTypeHeaderExists) {",
+									"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"].has(\"application/json;\");",
+									"}",
+									"",
+									"tests[\"Body should not have Orders\"] = responseBody.has(\"Orders\") === false;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests[\"Customer has Name\"] = data.value[0].Name === \"Fred Smith\";",
+									"",
+									"tests[\"Customer has Id\"] = data.value[0].Id === \"cc564bd0-153f-450f-b04a-9d3cd76d5abd\";",
+									"",
+									" "
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/Customers",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Customers metadata",
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/$metadata#Customers",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Customers metadata\n\n/sitecore/api/ssc/aggregate/custom/$metadata#Customers"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers-ExpandOrders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+									" ",
+									"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+									" ",
+									"if (contentTypeHeaderExists) {",
+									"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"] === \"application/json; odata.metadata=minimal; odata.streaming=true\";",
+									"}",
+									"",
+									"tests[\"Body should have Orders\"] = responseBody.has(\"Orders\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/Customers?$expand=Orders",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Use the Expand filter to pull in referenced Orders for Cusomers"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers-CustomerByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+									" ",
+									"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+									" ",
+									"if (contentTypeHeaderExists) {",
+									"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"].has(\"application/json;\");",
+									"}",
+									"",
+									"tests[\"Body should not have Orders\"] = responseBody.has(\"Orders\") === false;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests[\"Customer has Name\"] = data.Name === \"Fred Smith\";",
+									"",
+									"tests[\"Customer has Id\"] = data.Id === \"cc564bd0-153f-450f-b04a-9d3cd76d5abd\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/Customers('cc564bd0-153f-450f-b04a-9d3cd76d5abd')",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Retrieve a single customer by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+									" ",
+									"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+									" ",
+									"if (contentTypeHeaderExists) {",
+									"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"].has(\"application/json;\");",
+									"}",
+									"",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests[\"Order has Description\"] = data.value[0].Description === \"first order\";",
+									"",
+									"tests[\"Order has PurchaseTimestamp\"] = data.value[0].PurchaseTimestamp.length > 10;",
+									"",
+									"tests[\"Order has Id\"] = data.value[0].Id.length > 10;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/Orders",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Retrieve the orders collection"
+					},
+					"response": []
+				},
+				{
+					"name": "Customers TopBuyer namespace call",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+									" ",
+									"tests[\"Has Content-Type\"] = contentTypeHeaderExists;",
+									" ",
+									"if (contentTypeHeaderExists) ",
+									"{",
+									"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"].has(\"application/json;\");",
+									"}",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests[\"JSON content returned\"] = data !== null;",
+									"",
+									"tests[\"Pete Best is TopBuyer()\"] = data.Name === \"Pete Best\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/custom/Customers/CustomService.Model.TopBuyer",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Retrieve the top buying customer"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 Admin Service",
+			"description": "",
+			"item": [
+				{
+					"name": "Admin Service contains Todo EntitySet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"var testsPassed = tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (testsPassed)",
+									"{",
+									"   testsPassed = tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"   ",
+									"    if (testsPassed)",
+									"    {",
+									"        var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"        tests[\"Model name is TodoList\"] = jsonData.value[0].name === \"TodoList\";",
+									"   }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin?$metadata",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Admin Service contains Todo objects"
+					},
+					"response": []
+				},
+				{
+					"name": "Read initial empty EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\");",
+									"",
+									"var testsPassed = tests[\"Content-Type is present\"] = contentType;",
+									"",
+									"if (testsPassed)",
+									"{",
+									"    testsPassed = tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"",
+									"    if (testsPassed)",
+									"    {",
+									"        var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"        tests[\"JSON response returned\"] = jsonData !== null;",
+									"    ",
+									"        tests[\"JSON array of Entity objects returned\"] = jsonData.value.length > 0;",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Admin Service returns empty Todo collection as JSON"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

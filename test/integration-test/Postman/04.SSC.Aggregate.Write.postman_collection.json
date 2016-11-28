@@ -1,0 +1,933 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SSC.Aggregate.Write",
+		"_postman_id": "95a6e070-dca2-3279-4102-32b89e3e8459",
+		"description": "## Spec:\n\nAs Peter the developer\nI need to create Read+Write OData Services\n\n## Acceptance Criteria\n\n- I can implement an IReadWriteEntityRepository\n- There is a base OData controller with support for Get/GetAll/Put/Post/Delete wired to IReadWriteEntityRepository\n\n\n\n## Refereneces\n\n- [Using HTTP Methods for RESTful Services](http://www.restapitutorial.com/lessons/httpmethods.html)\n\n- [Routing Conventions in ASP.NET Web API 2 Odata](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-routing-conventions)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 Create Item in Collection",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Todo('1') to EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"/* De-comment when R/W feature is available",
+									"",
+									"",
+									"tests[\"Status code is Created\"] = (responseCode.code === 201);",
+									"",
+									"",
+									"// Check that JSON was returned",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (contentType !== null)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"}",
+									"",
+									"// Check content was returned",
+									"",
+									"var contentLength = postman.getResponseHeader(\"Content-Length\")",
+									"",
+									"tests[\"Content-Length Header is set\"] = contentLength !== null;",
+									"",
+									"if (contentLength !== null)",
+									"{",
+									"   tests[\"Content was returned in Response body\"] = contentLength !== \"0\";",
+									"}",
+									"else",
+									"{",
+									"    // Check that the correct Entity has been returned in the Body as JSON",
+									"    ",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"JSON Body is present\"] = jsonData !== null;",
+									"    ",
+									"    if (jsonData !== null)",
+									"    {",
+									"      tests[\"Returned Entity has ID 1\"] = jsonData.Id === \"1\";",
+									"    }",
+									"    ",
+									"    // Check Location has a link to the created Entity",
+									"    ",
+									"    var locationHeader = postman.getResponseHeader(\"Location\");",
+									"    ",
+									"    tests[\"Location Header is set\"] = locationHeader !== null;",
+									"    ",
+									"    if (locationHeader !== null)",
+									"    {",
+									"       tests[\"Location Header has link to new Entity\"] = locationHeader.has(\"/sitecore/api/ssc/aggregate/admin/Todo('1')\");",
+									"    }",
+									"}",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"First Task\",\n      \"Completed\": false,\n      \"Index\": 4,\n      \"Id\": \"1\",\n      \"Url\": null\n}"
+						},
+						"description": "Add Todo('1') Entity to the Todo EntitySet collection.\n\nTest for:\n\n- POST Create returns 201 (Created)\n- 'Location' header with link to /Todo/{id} containing new ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Todo('1') is in EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"/* De-comment when R/W feature is available",
+									"",
+									"var testPassed = tests[\"Status code is 200\"] = (responseCode.code === 200)",
+									"",
+									"if (testPassed)",
+									"{",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"Task Title is correct\"] = jsonData.Title === \"First Task\"",
+									"    tests[\"Task Completed is correct\"] = jsonData.Completed === false",
+									"}",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Todo('1') has been added to the Todo EntitySet collection."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Todo('1') fails when it exists in EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"",
+									"tests[\"Status code is 409 (Conflict) as resource already exists\"] = (responseCode.code === 409);",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"First Task\",\n      \"Completed\": true,\n      \"Index\": 4,\n      \"Id\": \"1\",\n      \"Url\": null\n}"
+						},
+						"description": "Attempt to add Todo('1') Entity to the Todo EntitySet collection when it is already present in the collection\n\nTest for:\n\n- 409 (Conflict) as resource already exists"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Todo('1')  with non-existent field returns 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"",
+									"tests[\"Status code is Bad request\"] = (responseCode.code === 400);",
+									"// TODO error message should contain approprate information. Add more tests. Not it is just \"The argument cannot be null: entity\"",
+									"",
+									"*/",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"Second Task\",\n      \"Completed\": false,\n      \"Index\": 5,\n      \"MyField\":\"field doesn't exists\",\n      \"Id\": \"2\",\n      \"Url\": null\n}"
+						},
+						"description": "Add Todo('1') Entity to the Todo EntitySet collection.\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Todo (Missing Id') to EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"tests[\"Status code is Created\"] = (responseCode.code === 201);",
+									"",
+									"",
+									"// Check that JSON was returned",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (contentType !== null)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"}",
+									"",
+									"// Check content was returned",
+									"",
+									"var contentLength = postman.getResponseHeader(\"Content-Length\")",
+									"",
+									"tests[\"Content-Length Header is set\"] = contentLength !== null;",
+									"",
+									"if (contentLength !== null)",
+									"{",
+									"   tests[\"Content was returned in Response body\"] = contentLength !== \"0\";",
+									"}",
+									"else",
+									"{",
+									"    // Check that the correct Entity has been returned in the Body as JSON",
+									"    ",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    ",
+									"    tests[\"JSON Body is present\"] = jsonData !== null;",
+									"    ",
+									"    if (jsonData !== null)",
+									"    {",
+									"      tests[\"Returned Entity has ID 1\"] = jsonData.Id === \"1\";",
+									"    }",
+									"    ",
+									"    // Check Location has a link to the created Entity",
+									"    ",
+									"    var locationHeader = postman.getResponseHeader(\"Location\");",
+									"    ",
+									"    tests[\"Location Header is set\"] = locationHeader !== null;",
+									"    ",
+									"    if (locationHeader !== null)",
+									"    {",
+									"       tests[\"Location Header has link to new Entity\"] = locationHeader.has(\"/sitecore/api/ssc/aggregate/admin/Todo('1')\");",
+									"    }",
+									"}",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"Another Task\",\n      \"Completed\": false,\n      \"Index\": 7\n}"
+						},
+						"description": "Add Todo (Missing Id) Entity to EntitySet collection.\n\nTest for:\n\n- POST Create returns 201 (Created)\n- 'Location' header with link to /Todo/{id} containing new ID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02 Update Item in Collection",
+			"description": "",
+			"item": [
+				{
+					"name": "Put Todo('1')  with non-existent field returns 400 ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"tests[\"Status code is Bad request\"] = (responseCode.code === 400);",
+									"//TODO User should get an understandable error message. Not it is just :\"The argument cannot be null: update\"",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"Second Task\",\n      \"Completed\": false,\n      \"Index\": 5,\n      \"MyField\":\"field doesn't exists\",\n      \"Id\": \"1\",\n      \"Url\": null\n}"
+						},
+						"description": "Put Todo('1') with wrong field\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Put on wrong type field is a Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"tests[\"Status code is Bad Request\"] = (responseCode.code === 400);",
+									"//TODO check error message. It should be understandable. Now it is just The argument cannot be null: update\"\"",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\": \"1\",\n    \"Title\":fdgd\n}"
+						},
+						"description": "PUT returns Bad Request when field has an incorrect type"
+					},
+					"response": []
+				},
+				{
+					"name": "Put on partial update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"tests[\"Status code is Bad Request\"] = (responseCode.code === 204);",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\": \"1\",\n    \"Title\":\"Only Title is updated\"\n}"
+						},
+						"description": "PUT replaces an existing entity. If only a subset of data elements are provided, the rest will be replaced with empty or null. "
+					},
+					"response": []
+				},
+				{
+					"name": "Check Todo('1') is in EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"/* De-comment when R/W feature is available",
+									"",
+									"tests[\"Status code is 200\"] = (responseCode.code === 200);",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Task Title is correct\"] = jsonData.Title === \"Only Title is updated\"",
+									"tests[\"Task Completed is replaced with default value\"] = jsonData.Completed === false",
+									"tests[\"Index is replaced with default value\"] = jsonData.Index === 0",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Todo('1') has been added to the Todo EntitySet collection."
+					},
+					"response": []
+				},
+				{
+					"name": "Put on EntitySet collection returns Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (contentType !== null)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"}",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"JSON response returned\"] = jsonData !== null;",
+									"",
+									"// TODO this request should be routed to the ODataControllerBase ... tests[\"Request was routed\"] = !responseBody.has(\"No routing convention\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "PUT  Update/Replace when performed on the EntitySet collection returns 404 (Not Found)."
+					},
+					"response": []
+				},
+				{
+					"name": "Put on Todo('1')  without ID in body returns 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is Bad Request\"] = (responseCode.code === 400);",
+									"",
+									"tests[\"Body contains required Id field\"] = responseBody.has(\"Missing model Id property\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"Without ID First Task\",\n      \"Completed\": false,\n      \"Index\": 4,\n      \"Url\": null\n}"
+						},
+						"description": "PUT  Update/Replace when performed on the an existing entity withou required field returns 400"
+					},
+					"response": []
+				},
+				{
+					"name": "Put on Todo('1')  updates Entity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is No Content\"] = (responseCode.code === 204);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"Renamed First Task\",\n      \"Completed\": true,\n      \"Index\": 4,\n      \"Id\": \"1\",\n      \"Url\": null\n}"
+						},
+						"description": "PUT  Update/Replace when performed on the an existing entity updates it's value from the request body and return 204 (No Content)."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Todo('1') fields have been updated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"/* De-comment when R/W feature is available",
+									"",
+									"tests[\"Status code is OK\"] = (responseCode.code === 200);",
+									"",
+									"// Check that JSON was returned",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (contentType !== null)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"}",
+									"",
+									"// Check that the correct Entity has been returned in the Body as JSON",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Task Title has been updated\"] = jsonData.Title === \"Renamed First Task\"",
+									"tests[\"Task Completed is correct\"] = jsonData.Completed === true",
+									"",
+									"*/"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Todo('1') has been updated by re-reading the entity."
+					},
+					"response": []
+				},
+				{
+					"name": "Put on Todo('notknown')  returns 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('notknown')",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"Title\": \"Renamed First Task\",\n      \"Completed\": false,\n      \"Index\": 4,\n      \"Id\": \"notknown\",\n      \"Url\": null\n}"
+						},
+						"description": "PUT returns Not Found when Entity does not exist."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03 Modify Item in Collection - Partial Update",
+			"description": "",
+			"item": [
+				{
+					"name": "Patch returns 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is Bad Request\"] = (responseCode.code === 404);",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\": \"1\",\n    \"Title\":\"Updated with Patch request\"\n}"
+						},
+						"description": "Patch is not supported. It should be documented"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 Remove Item from Collection",
+			"description": "",
+			"item": [
+				{
+					"name": "Delete Todo('1') Entity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is 204\"] = responseCode.code === 204;",
+									"",
+									"tests[\"Body is empty\"] = responseBody === \"\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Admin Service can remove a Todo Entity"
+					},
+					"response": []
+				},
+				{
+					"name": "Todo('1') removed from Todo EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 404\"] = (responseCode.code === 404);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('1')",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Todo('1') has been deleted by re-reading the collection."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Todo('1')  Entity returns Not Found response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is 404\"] = responseCode.code === 404;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList('qwerty')",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Admin Service returns a HTTP 404 status code for a non existent Todo entity."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete on EntitySet collection returns Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"return",
+									"",
+									"tests[\"Status code is Not Found\"] = (responseCode.code === 404);",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (contentType !== null)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"}",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"JSON response returned\"] = jsonData !== null;",
+									"",
+									"// TODO this request should be routed to the ODataControllerBase ... tests[\"Request was routed\"] = !responseBody.has(\"No routing convention\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Delete  when performed on the EntitySet collection returns 404 (Not Found)."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
