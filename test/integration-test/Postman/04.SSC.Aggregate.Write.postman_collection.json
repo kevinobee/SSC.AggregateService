@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "SSC.Aggregate.Write",
-		"_postman_id": "01137496-9209-514f-402c-094c355bf187",
+		"_postman_id": "95a6e070-dca2-3279-4102-32b89e3e8459",
 		"description": "## Spec:\n\nAs Peter the developer\nI need to create Read+Write OData Services\n\n## Acceptance Criteria\n\n- I can implement an IReadWriteEntityRepository\n- There is a base OData controller with support for Get/GetAll/Put/Post/Delete wired to IReadWriteEntityRepository\n\n\n\n## Refereneces\n\n- [Using HTTP Methods for RESTful Services](http://www.restapitutorial.com/lessons/httpmethods.html)\n\n- [Routing Conventions in ASP.NET Web API 2 Odata](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-routing-conventions)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},

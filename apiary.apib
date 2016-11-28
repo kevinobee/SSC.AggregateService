@@ -9,7 +9,7 @@ Aggregate Service controllers are derived from `System.Web.OData.ODataController
 
 ## OData
 
-OData is an open protocol to allow the creation and consumption of queryable and interoperable RESTful APIs in a simple and standard way.
+OData is an open protocol to allow the creation and consumption of queryable and inter-operable RESTful APIs in a simple and standard way.
 
 [OData (Open Data Protocol)](http://www.odata.org/) is an [OASIS standard](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=odata) 
 that defines the best practice for building and consuming RESTful APIs. OData helps you focus on your business logic while building RESTful APIs 
@@ -30,6 +30,10 @@ sending asynchronous/batch requests etc. Additionally, OData provides facility f
 + Response 200 (application/json)
 
         [
+            {
+                "RouteName": "Admin Services",
+                "Url": "sitecore/api/ssc/aggregate/admin"
+            },
             {
                 "RouteName": "CustomRoute",
                 "Url": "sitecore/api/ssc/aggregate/custom"
@@ -68,11 +72,6 @@ Request the root of the custom aggregate service to discover service endpoints
                     "name": "Orders",
                     "kind": "EntitySet",
                     "url": "Orders"
-                },
-                {
-                    "name": "TopBuyer",
-                    "kind": "FunctionImport",
-                    "url": "TopBuyer"
                 }
             ]
         }
@@ -106,9 +105,6 @@ Request the EDM metadata for the custom aggregate service
                         <Property Name="Id" Type="Edm.String" Nullable="false" />
                         <Property Name="Url" Type="Edm.String" />
                     </EntityType>
-                    <Function Name="TopBuyer">
-                        <ReturnType Type="CustomService.Model.Customer" />
-                    </Function>
                     <Function Name="TopBuyer" IsBound="true">
                         <Parameter Name="bindingParameter" Type="Collection(CustomService.Model.Customer)" />
                         <ReturnType Type="CustomService.Model.Customer" />
@@ -118,11 +114,11 @@ Request the EDM metadata for the custom aggregate service
                             <NavigationPropertyBinding Path="Orders" Target="Orders" />
                         </EntitySet>
                         <EntitySet Name="Orders" EntityType="CustomService.Model.Order" />
-                        <FunctionImport Name="TopBuyer" Function="CustomService.Model.TopBuyer" EntitySet="Customers" IncludeInServiceDocument="true" />
                     </EntityContainer>
                 </Schema>
             </edmx:DataServices>
         </edmx:Edmx>
+
 
 
 ### Customers Collection [GET /aggregate/custom/Customers]
@@ -273,33 +269,33 @@ Invokes the TopBuyer custom OData Function bound to the `Customers` collection.
 
 The example custom aggregate service that we are going to look at it for Creating, Updating, and Deleting Entities is the `admin` service.
 
-The service contains a single `Todo` OData collection resource. The service metadata shows the structure of the 'Todo' entity.
+The service contains a single `TodoList` OData collection resource. The service metadata shows the structure of the 'Todo' entity.
 
 ```
-<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
-    <edmx:DataServices>
-        <Schema Namespace="CustomService.Model" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-            <EntityType Name="Todo">
-                <Key>
-                    <PropertyRef Name="Id" />
-                </Key>
-                <Property Name="Title" Type="Edm.String" />
-                <Property Name="Completed" Type="Edm.Boolean" Nullable="false" />
-                <Property Name="Index" Type="Edm.Int32" Nullable="false" />
-                <Property Name="Id" Type="Edm.String" Nullable="false" />
-                <Property Name="Url" Type="Edm.String" />
-            </EntityType>
-            <EntityContainer Name="Container">
-                <EntitySet Name="Todo" EntityType="CustomService.Model.Todo" />
-            </EntityContainer>
-        </Schema>
-    </edmx:DataServices>
-</edmx:Edmx>
+    <?xml version="1.0" encoding="utf-8"?>
+    <edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:DataServices>
+            <Schema Namespace="CustomService.Model" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <EntityType Name="Todo">
+                    <Key>
+                        <PropertyRef Name="Id" />
+                    </Key>
+                    <Property Name="Title" Type="Edm.String" />
+                    <Property Name="Completed" Type="Edm.Boolean" Nullable="false" />
+                    <Property Name="Index" Type="Edm.Int32" Nullable="false" />
+                    <Property Name="Id" Type="Edm.String" Nullable="false" />
+                    <Property Name="Url" Type="Edm.String" />
+                </EntityType>
+                <EntityContainer Name="Container">
+                    <EntitySet Name="TodoList" EntityType="CustomService.Model.Todo" />
+                </EntityContainer>
+            </Schema>
+        </edmx:DataServices>
+    </edmx:Edmx>
 ```
 
 
-### Add Item to Collection [POST /aggregate/admin/Todo]
+### Add Item to Collection [POST /aggregate/admin/TodoList]
 
 + Request (application/json)
 
@@ -315,12 +311,12 @@ The service contains a single `Todo` OData collection resource. The service meta
 
     + Headers
 
-            Location: https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo('1')
+            Location: https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/TodoList('1')
 
     + Body
 
             {
-                "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/$metadata#Todo/$entity",
+                "@odata.context": "https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/$metadata#TodoList/$entity",
                 "Title": "First Task",
                 "Completed": false,
                 "Index": 4,
@@ -347,7 +343,7 @@ The service contains a single `Todo` OData collection resource. The service meta
 + Response 409
 
 
-### Update an Item [PUT /aggregate/admin/Todo('{id}')]
+### Update an Item [PUT /aggregate/admin/TodoList('{id}')]
 
 Aggregate Services do not support the use of the `PUT` verb to create a new item if the item does not already exist in the entity collection. 
 
@@ -385,7 +381,7 @@ Use the `POST` verb for the purpose of creating entities.
 + Response 404
 
 
-### Update a Collection [PUT /aggregate/admin/Todo]
+### Update a Collection [PUT /aggregate/admin/TodoList]
 
 Aggregate Services do not support the use of the `PUT` verb to update the contents of an entire entity collection. 
 
@@ -407,7 +403,7 @@ Aggregate Services do not support the use of the `PUT` verb to update the conten
                 "error": 
                 {
                     "code": "",
-                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo'.",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/TodoList'.",
                     "innererror": 
                     {
                         "message": "No routing convention was found to select an action for the OData path with template '~/entityset'.",
@@ -417,7 +413,7 @@ Aggregate Services do not support the use of the `PUT` verb to update the conten
                 }
             }
 
-### Partial Update of an Item [PATCH /aggregate/admin/Todo('{id}')]
+### Partial Update of an Item [PATCH /aggregate/admin/TodoList('{id}')]
 
 Attempts to perform a partial update on a single item in the `Todo` collection.
 
@@ -442,7 +438,7 @@ The `PATCH` verb is not supported by Aggregate Services in the current SSC relea
                 "error": 
                 {
                     "code": "",
-                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo('1')'.",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/TodoList('1')'.",
                     "innererror": 
                     {
                         "message": "No routing convention was found to select an action for the OData path with template '~/entityset/key'.",
@@ -452,7 +448,7 @@ The `PATCH` verb is not supported by Aggregate Services in the current SSC relea
                 }
             }
 
-### Partial Update on a Collection [PATCH /aggregate/admin/Todo]
+### Partial Update on a Collection [PATCH /aggregate/admin/TodoList]
 
 Aggregate Services do not support the use of the `PATCH` verb to update the contents of an entire entity collection. 
 
@@ -474,7 +470,7 @@ Aggregate Services do not support the use of the `PATCH` verb to update the cont
                 "error": 
                 {
                     "code": "",
-                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo'.",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/TodoList'.",
                     "innererror": 
                     {
                         "message": "No routing convention was found to select an action for the OData path with template '~/entityset'.",
@@ -485,7 +481,7 @@ Aggregate Services do not support the use of the `PATCH` verb to update the cont
             }
 
 
-### Delete an Item [DELETE /aggregate/admin/Todo('{id}')]
+### Delete an Item [DELETE /aggregate/admin/TodoList('{id}')]
 
 + Parameters
 
@@ -496,7 +492,7 @@ Aggregate Services do not support the use of the `PATCH` verb to update the cont
 + Response 404
 
 
-### Delete a Collection [DELETE /aggregate/admin/Todo]
+### Delete a Collection [DELETE /aggregate/admin/TodoList]
 
 Aggregate Services do not support the use of the `DELETE` verb to remove the contents of an entire entity collection. 
 
@@ -508,7 +504,7 @@ Aggregate Services do not support the use of the `DELETE` verb to remove the con
                 "error": 
                 {
                     "code": "",
-                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/Todo'.",
+                    "message": "No HTTP resource was found that matches the request URI 'https://github.com/kevinobee/SSC.AggregateService/sitecore/api/ssc/aggregate/admin/TodoList'.",
                     "innererror": 
                     {
                         "message": "No routing convention was found to select an action for the OData path with template '~/entityset'.",
