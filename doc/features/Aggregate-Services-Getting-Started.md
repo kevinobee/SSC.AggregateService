@@ -43,7 +43,7 @@ The class can have further actions of you need to add functions/actions to your 
 
 ### Step 4: Register the repository and API controllers in DI container
 
-Register the repository in the DI continer like this:
+Register the repository in the DI container like this:
 
 ```
     public void Configure(IServiceCollection serviceCollection)
@@ -54,10 +54,10 @@ Register the repository in the DI continer like this:
     }
 ```
 
-Note: Lifetime choosen for repository is dependent on nature of service. Here Singleton is used only an an example.
+Note: Lifetime chosen for repository is dependent on nature of service. Here Singleton is used only an an example.
 
 ### Step 5: Register OData metadata
 
 Create a class that derives from `Sitecore.Services.Core.OData.AggregateDescriptor`. Use the base constructor to specify your EdmModelBuilder.
 
-Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes your service (or for simple service aggrigates use the `DefaultEdmModelBuilder`). 
+Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes your service (or for simple service aggregates use the `DefaultEdmModelBuilder`). 

@@ -1,4 +1,3 @@
-using System;
 using Sitecore.Services.Core.Model;
 
 namespace CustomService.Model
@@ -12,8 +11,6 @@ namespace CustomService.Model
             _lastId++;
 
             Id = _lastId.ToString();
-
-
         }
 
         public string Title { get; set; }

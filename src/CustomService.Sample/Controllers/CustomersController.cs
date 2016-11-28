@@ -1,9 +1,6 @@
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.OData;
 using System.Web.OData.Routing;
 
 using CustomService.Model;
@@ -31,6 +28,7 @@ namespace CustomService.Controllers
             var customers =
                     Repository
                         .GetData()
+                        // ReSharper disable once RedundantTypeArgumentsOfMethod - rrequired by build.cmd
                         .ContinueWith<IOrderedQueryable<Customer>>(Customer.GetTopBuyer)
                         .Result
                         .ToArray();

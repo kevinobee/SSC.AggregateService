@@ -10,7 +10,7 @@ The Sitecore Services Client [Aggregate Service documentation](http://docs.sscag
 
 ## Developing with SSC and OData
 
-The [Getting started with Aggregate Services](doc\features\Aggregate Services - Getting-Started.md) document will introduce the moving parts associated with the composition of an aggregate service.
+The [Getting started with Aggregate Services](doc\features\Aggregate-Services-Getting-Started.md) document will introduce the moving parts associated with the composition of an aggregate service.
 
 * Service Descriptor
 * EDM Model Builder
