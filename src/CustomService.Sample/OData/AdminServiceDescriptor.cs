@@ -13,7 +13,7 @@ namespace CustomService.OData
                 "admin", 
                 new DefaultEdmModelBuilder(new[]
                 {
-                    new EntitySetDefintion(typeof(Todo), "Todo") // Use the collectionName parameter to prevent pluralization of the EntitySet name in the EDM
+                    new EntitySetDefintion(typeof(Todo), "TodoList") // Use the collectionName parameter to prevent pluralization of the EntitySet name in the EDM
                 }))
         {
         }

@@ -22,7 +22,7 @@ The build framework employs [Windows Environment Variables](http://ss64.com/nt/s
 
 ##### Build Numbering Parameters
 
-We use GitVerion to determine the build version numbers. Find out more about the [Development Tooling](..\Development-Tooling.md) that we use.
+We use GitVersion to determine the build version numbers. Find out more about the [Development Tooling](..\Development-Tooling.md) that we use.
 
 Note: The build framework aims to work with the [Semantic Versioning](http://semver.org/spec/v1.0.0.html)  (SemVer) v1.0.0 specification.
 
@@ -63,7 +63,7 @@ The outputs from the automated build will be written to the `artifacts\Release` 
 
 
 
-**Note:** currently the configuration files for the project organisation shown above are not held under source control. Exercise caution when making changes to these files under this issue can be resolved.
+**Note:** currently the configuration files for the project organisation shown above are not held under source control. Exercise caution when making changes to these files until this issue can be resolved.
 
 #### NuGet Feeds
 

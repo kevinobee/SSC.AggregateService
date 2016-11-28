@@ -17,7 +17,7 @@ namespace CustomService.Extensions
                 .AddScoped<IReadOnlyEntityRepository<Customer>, InMemoryReadOnlyEntityRepository>()
                 .AddScoped<IReadOnlyEntityRepository<Order>, InMemoryReadOnlyEntityRepository>()
                 .AddScoped(provider => new CustomServiceDescriptor(new CustomServiceEdmBuilder()))
-                .AddScoped<IReadWriteEntityRepository<Todo>, TodoRepository>()
+                .AddScoped<IReadOnlyEntityRepository<Todo>, TodoRepository>()
                 ;
         }
     }

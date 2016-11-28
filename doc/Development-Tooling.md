@@ -60,6 +60,8 @@ To verify that the mongo database server is up and listening correctly load http
 
 The project uses [MSBuild](https://msdn.microsoft.com/en-us/library/0k6kkbsd.aspx) for its build system.
 
+The Command Line Build is documented in [build\README.md](..\build\README.md). Please review this documentation as it will inform you how to setup your local developer environment.
+
 To run the build from the command line enter the following from the root of the repository
 
 ```
@@ -71,6 +73,7 @@ The build process accepts **target** and **config** parameters as shown below:
 ```
     build.cmd test release
 ```
+
 
 
 

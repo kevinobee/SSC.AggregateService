@@ -2,14 +2,14 @@
 	"variables": [],
 	"info": {
 		"name": "SSC.Aggregate",
-		"_postman_id": "196a5394-9955-694a-bbe1-1ac0fc67f043",
+		"_postman_id": "d25f4aa6-f633-b95a-6d8f-1b213ec1ed12",
 		"description": "\tTest the Sample features within the SSC.Aggregate package",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Aggregate Services",
-			"description": "Behavioural tests for OData enabled services",
+			"name": "01 Service Discovery",
+			"description": "",
 			"item": [
 				{
 					"name": "CustomService.Sample Services Included",
@@ -42,10 +42,16 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"description": "Check that the Aggregate services includer the following services defined in the CustomService.Sample assemply:\n\n* Admin\n* Custom"
+						"description": "Check that the Aggregate services includer the following services defined in the CustomService.Sample assembly:\n\n* Admin\n* Custom"
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "02 Root Request to Each Aggregate Service",
+			"description": "",
+			"item": [
 				{
 					"name": "Root Request to Admin Service",
 					"event": [
@@ -66,7 +72,7 @@
 									"  }",
 									"  else",
 									"  {",
-									"    tests[\"Todo EntitySet defined\"] = data.value[0].name === \"Todo\";",
+									"    tests[\"Todo EntitySet defined\"] = data.value[0].name === \"TodoList\";",
 									"  }",
 									"}",
 									"else ",
@@ -152,9 +158,15 @@
 						"description": "Request the root of the custom aggregate service to discover service endpoints"
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "03 Custom Service",
+			"description": "Behavioural tests for OData enabled services.\n\nTesting only the Query (Read) operations on the controller.  This is inline with the Sitecore 8.2 initial release behaviour.",
+			"item": [
 				{
-					"name": "Root Request $metadata",
+					"name": "Viwe Custom Service Metadata",
 					"event": [
 						{
 							"listen": "test",
@@ -438,6 +450,102 @@
 							"formdata": []
 						},
 						"description": "Retrieve the top buying customer"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 Admin Service",
+			"description": "",
+			"item": [
+				{
+					"name": "Admin Service contains Todo EntitySet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"",
+									"tests[\"Content-Type Header is set\"] = contentType !== null;",
+									"",
+									"if (contentType !== null)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"}",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Model name is Todo\"] = jsonData.value[0].name === \"TodoList\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin?$metadata",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Admin Service contains Todo objects"
+					},
+					"response": []
+				},
+				{
+					"name": "Read initial empty EntitySet collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var contentType = postman.getResponseHeader(\"Content-Type\");",
+									"",
+									"tests[\"Content-Type is present\"] = contentType;",
+									"",
+									"if (contentType)",
+									"{",
+									"   tests[\"Content-Type is JSON\"] = contentType.has(\"application/json\");",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"",
+									"    tests[\"JSON response returned\"] = jsonData !== null;",
+									"",
+									"    tests[\"JSON array of Entity objects returned\"] = jsonData.value.length > 0;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}/sitecore/api/ssc/aggregate/admin/TodoList",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Verify Admin Service returns empty Todo collection as JSON"
 					},
 					"response": []
 				}

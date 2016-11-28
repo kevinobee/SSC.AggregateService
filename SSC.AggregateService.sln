@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1BDAE08E-470
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{6C12A069-AB6C-4BB5-ABA2-0FCC4E7CFB6E}"
 	ProjectSection(SolutionItems) = preProject
+		doc\Development-Tooling.md = doc\Development-Tooling.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -31,10 +32,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration-test", "integra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman", "Postman", "{B30A0AF4-1095-4F65-9032-27753B753330}"
 	ProjectSection(SolutionItems) = preProject
+		test\integration-test\Postman\01.SSC.postman_collection.json = test\integration-test\Postman\01.SSC.postman_collection.json
+		test\integration-test\Postman\02.WebAPI.postman_collection.json = test\integration-test\Postman\02.WebAPI.postman_collection.json
+		test\integration-test\Postman\03.SSC.Aggregate.postman_collection.json = test\integration-test\Postman\03.SSC.Aggregate.postman_collection.json
+		test\integration-test\Postman\04.SSC.Aggregate.Write.postman_collection.json = test\integration-test\Postman\04.SSC.Aggregate.Write.postman_collection.json
 		test\integration-test\Postman\Local-Dev.postman_environment.json = test\integration-test\Postman\Local-Dev.postman_environment.json
-		test\integration-test\Postman\SSC.Aggregate.postman_collection.json = test\integration-test\Postman\SSC.Aggregate.postman_collection.json
-		test\integration-test\Postman\SSC.postman_collection.json = test\integration-test\Postman\SSC.postman_collection.json
-		test\integration-test\Postman\WebAPI.postman_collection.json = test\integration-test\Postman\WebAPI.postman_collection.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API documentation", "API documentation", "{202619A3-70FB-4ACA-B722-C331DA03CEF8}"

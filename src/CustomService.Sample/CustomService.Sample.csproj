@@ -219,10 +219,9 @@
     <Compile Include="Controllers\ErrorHandlingReporter.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\SimpleWepApiController.cs" />
-    <Compile Include="Controllers\TodoController.cs" />
+    <Compile Include="Controllers\TodoListController.cs" />
     <Compile Include="Data\BookEntityRepository.cs" />
     <Compile Include="Data\InMemoryReadOnlyEntityRepository.cs" />
-    <Compile Include="Data\IReadWriteEntityRepository.cs" />
     <Compile Include="Data\TodoRepository.cs" />
     <Compile Include="DependencyInjection\CustomServiceConfigurator.cs" />
     <Compile Include="Extensions\ServiceCollectionExtensions.cs" />
@@ -232,15 +231,12 @@
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Todo.cs" />
-    <Compile Include="OData\ODataControllerBase.cs" />
     <Compile Include="OData\AdminServiceDescriptor.cs" />
     <Compile Include="OData\CsdlServiceDescriptor.cs" />
     <Compile Include="OData\CustomServiceDescriptor.cs" />
     <Compile Include="OData\Edm\CsdlEdmModelBuilder.cs" />
     <Compile Include="OData\Edm\CustomServiceEdmBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\Http\Filters\CheckModelForNullAttribute.cs" />
-    <Compile Include="Web\Http\Filters\ValidateModelStateAttribute.cs" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
