@@ -75,4 +75,4 @@ Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes 
 
  [1]: https://github.com/kevinobee/SSC.AggregateService/
  [2]: http://docs.sscaggregateservice.apiary.io/
- [3]: doc\features\Aggregate-Services-Code-Examples.md
+ [3]: doc/features/Aggregate-Services-Code-Examples.md
