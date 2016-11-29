@@ -60,13 +60,19 @@ Note: Lifetime chosen for repository is dependent on nature of service. Here Sin
 
 Create a class that derives from `Sitecore.Services.Core.OData.AggregateDescriptor`. Use the base constructor to specify your EdmModelBuilder.
 
-Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes your service (or for simple service aggregates use the `DefaultEdmModelBuilder`). 
+Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes your service or, for simple service aggregates, use the `DefaultEdmModelBuilder`. 
 
 
 ## SSC Aggregate Services: References
 
-## 1. **API Documentation** is available [online](http://bit.ly/ssc-docs-aggregate).
+1. **API Documentation** is available [online][2].
 
     The API documentation site also provides users with the chance to interact with a mock of the API and inspect recent traffic sent to this API mock.
 
-2. **Code Examples** can be found in the [SSC.AggregateService project](http://bit.ly/ssc-aggregate) on GitHub. For further details refer to the [Aggregate Services Code Examples](Aggregate-Services-Code-Examples.md) documentation.
+2. **Code Examples** can be found in the [SSC.AggregateService project][1] on GitHub. For further details refer to the [Aggregate Services Code Examples][3] documentation.
+
+
+
+ [1]: https://github.com/kevinobee/SSC.AggregateService/
+ [2]: http://docs.sscaggregateservice.apiary.io/
+ [3]: doc\features\Aggregate-Services-Code-Examples.md
