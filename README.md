@@ -26,7 +26,7 @@ For further details refer to the [Aggregate Services Code Examples][4] documenta
 
 ## Instructions for Use
 
-The latest release versions of the SC.AggregateService packages can be found in the [NuGet package gallery][9]
+The latest release versions of the SSC.AggregateService packages can be found in the [NuGet package gallery][9]
 
 * [SSC.AggregateService.Sample][8] 
 
