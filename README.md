@@ -61,9 +61,9 @@ The [MIT license][7]
 
  [1]: https://github.com/kevinobee/SSC.AggregateService/
  [2]: http://docs.sscaggregateservice.apiary.io/
- [3]: doc\features\Aggregate-Services-Getting-Started.md
- [4]: doc\features\Aggregate-Services-Code-Examples.md
- [5]: doc\Development-Tooling.md
+ [3]: doc/features/Aggregate-Services-Getting-Started.md
+ [4]: doc/features/Aggregate-Services-Code-Examples.md
+ [5]: doc/Development-Tooling.md
  [6]: https://sitecorecontextitem.wordpress.com/2015/01/07/what-is-sitecore-services-client/
  [7]: https://github.com/kevinobee/SSC.AggregateService/blob/master/LICENSE
  [8]: https://www.nuget.org/packages/SSC.AggregateService.Sample/
