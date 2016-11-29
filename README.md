@@ -31,7 +31,7 @@ The latest release versions of the SSC.AggregateService packages can be found in
 * [SSC.AggregateService.Sample][8] 
 
 
-### Installing SSC.AggregateService.Sample via NuGet
+### Installing the Sample package via NuGet
 
 Ensure that the website project is set to run with .NET Framework 4.5.2
 
