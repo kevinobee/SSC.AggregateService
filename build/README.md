@@ -22,7 +22,7 @@ The build framework employs [Windows Environment Variables](http://ss64.com/nt/s
 
 ##### Build Numbering Parameters
 
-We use GitVersion to determine the build version numbers. Find out more about the [Development Tooling](..\Development-Tooling.md) that we use.
+We use GitVersion to determine the build version numbers. Find out more about the [Development Tooling](../doc/Development-Tooling.md) that we use.
 
 Note: The build framework aims to work with the [Semantic Versioning](http://semver.org/spec/v1.0.0.html)  (SemVer) v1.0.0 specification.
 
