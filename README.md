@@ -21,6 +21,23 @@ For further details refer to the [Aggregate Services Code Examples][4] documenta
  - [Aggregate Service documentation][2]
  - [Getting started with Aggregate Services guide][3]
  - [Aggregate Services Code Examples][4]
+ - [SC.AggregateService.Sample NuGet package][8]
+
+
+## Instructions for Use
+
+The latest release versions of the SC.AggregateService packages can be found in the [NuGet package gallery][9]
+
+* [SC.AggregateService.Sample][8] 
+
+
+### Installing SC.AggregateService.Sample via NuGet
+
+Ensure that the website project is set to run with .NET Framework 4.5.2
+
+Run the following PowerShell command in the Package Manager Console of the Visual Studio solution for the target website:
+
+    PM:> Install-Package SSC.AggregateService.Sample
 
 
 
@@ -41,3 +58,5 @@ The [MIT license][7]
  [5]: doc\Development-Tooling.md
  [6]: https://sitecorecontextitem.wordpress.com/2015/01/07/what-is-sitecore-services-client/
  [7]: https://github.com/kevinobee/SSC.AggregateService/blob/master/LICENSE
+ [8]: https://www.nuget.org/packages/SSC.AggregateService.Sample/
+ [9]: https://www.nuget.org/packages/ 
