@@ -5,6 +5,7 @@
     <version>0.0.0</version>
     <authors>kevinobee</authors>
     <owners>kevinobee</owners>
+    <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410</iconUrl>
     <licenseUrl>https://github.com/kevinobee/SSC.AggregateService/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/kevinobee/SSC.AggregateService</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -15,7 +16,7 @@
     <tags>Sitecore Services HTTP Sample SSC</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Sitecore.Services.Client.API" version="1.3.0" />
+        <dependency id="Sitecore.Services.Component" version="8.2.160729" />
       </group>
     </dependencies>
   </metadata>
