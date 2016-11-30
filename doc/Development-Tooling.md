@@ -69,7 +69,7 @@ To access the Docker machine IP address
     docker-machine ip
 ```
 
-To verify that the mongo database server is up and listening correctly load http://mongo:27017/ in a browser. You should get the following response HTTP 200 OK response with the following being returned in the body of the response:
+To verify that the mongo database server is up and listening correctly load [http://mongo:27017/](http://mongo:27017/) in a browser. You should get the following response HTTP 200 OK response with the following being returned in the body of the response:
 
 ```
     It looks like you are trying to access MongoDB over HTTP on the native driver port.
@@ -93,8 +93,6 @@ The build process accepts **target** and **config** parameters as shown below:
 ```
     build.cmd test release
 ```
-
-
 
 
 ### Build Pre-Requisites
