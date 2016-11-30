@@ -1,5 +1,8 @@
 # Sitecore Services Client Aggregate Service API
 
+[![Master Build status](https://ci.appveyor.com/api/projects/status/mnl4fm107yk34an4/branch/master?svg=true&passingText=master%20-%20OK&pendingText=master%20-%20building&failingText=master%20-%20Failed)](https://ci.appveyor.com/project/kevinobee/ssc-aggregateservice/branch/master)
+[![Develop Build status](https://ci.appveyor.com/api/projects/status/mnl4fm107yk34an4/branch/develop?svg=true&passingText=develop%20-%20OK&pendingText=develop%20-%20building&failingText=develop%20-%20Failed)](https://ci.appveyor.com/project/kevinobee/ssc-aggregateservice/branch/develop)
+
 A community repository that provides API documentation for the [Sitecore Services Client][6] Aggregate Service.
 
 
