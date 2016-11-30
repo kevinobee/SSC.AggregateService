@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
       
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Full" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <Import Project="$(MSBuildProjectDirectory)\buildInitial.props" />
   
@@ -125,15 +125,6 @@
                NoLogo="true" />
         
     </Target>
- 
-    <Target Name="DeployClientSite" >
-      
-      <Error Condition="'$(PublishProfile)' == ''" Text="No PublishProfile set" />
-            
-      <MSBuild Projects="$(SolutionFile)"
-               Properties="DeployOnBuild=true;PublishProfile=$(PublishProfile)" />
-
-    </Target>
   
   
     <!-- CI Build Integration Targets - Version, Build, Test, Analyze, Package -->
@@ -158,27 +149,17 @@
         
     </Target>
     
-    <Target Name="Test">
+    <Target Name="Test"
+            DependsOnTargets="RunUnitTests" /> 
     
-        <CallTarget Targets="RunUnitTests" />
-    
-    </Target>   
-    
-    <Target Name="Package">
+    <Target Name="Package"
+            DependsOnTargets="NugetPack; IntegrationTests; ">
         
-        <CallTarget Targets="IntegrationTests" />
-      
-        <CallTarget Targets="DeployClientSite" />
-      
         <CallTarget Targets="SmokeTest" />
     
     </Target>
 
-    <Target Name="Full" 
-            DependsOnTargets="Build; Test; Package">
-            
-            <!-- Fire dependencies to initiate a full build -->
-            
-    </Target>
+    <Target Name="Full"
+            DependsOnTargets="Build; Test; Package" />
 
 </Project>
