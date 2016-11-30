@@ -52,8 +52,19 @@
               Command="npm install -g newman@v3.0.1" />
   
   </Target>
+   
+  <Target Name="DeployClientSite" >
+    
+    <Error Condition="'$(PublishProfile)' == ''" Text="No PublishProfile set" />
+          
+    <MSBuild Projects="$(SolutionFile)"
+              Properties="DeployOnBuild=true;PublishProfile=$(PublishProfile)" />
+
+  </Target>
   
-  <Target Name="SmokeTest">
+  <Target Name="SmokeTest"
+          DependsOnTargets="DeployClientSite"
+          Condition="$(ExcludeSmokeTest) == ''">
 
     <Message Text="Validate known Sitecore Services endpoints" 
              Importance="high" />
