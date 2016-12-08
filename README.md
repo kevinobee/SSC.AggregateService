@@ -20,12 +20,29 @@ For further details refer to the [Aggregate Services Code Examples][4] documenta
 
 ## Online resources
 
- - [Source code][1]
- - [Aggregate Service documentation][2]
- - [Getting started with Aggregate Services guide][3]
- - [Aggregate Services Code Examples][4]
- - [SSC.AggregateService.Sample NuGet package][8]
- - [Sitecore User Group Presentation Slides][11] London, 29th November 2016
+The following SSC Aggregate Service resources are available online:
+
+  - Code Examples
+
+    - [Source code][1]
+
+    - [Aggregate Services Code Examples][4]
+
+ - Documentation
+
+    - [Aggregate Service documentation][2]
+
+    - [Getting started with Aggregate Services guide][3]
+
+ - NuGet Packages
+
+    - [SSC.AggregateService.Sample NuGet package][8]
+
+    - [Sitecore NuGet Package Gallery][12]
+
+ - Presentations
+
+    - [Sitecore User Group Presentation Slides][11] London, 29th November 2016
 
 
 ## Instructions for Use
@@ -74,4 +91,4 @@ The [MIT license][7]
  [9]: https://www.nuget.org/packages/ 
  [10]: https://sitecore.myget.org/F/sc-packages/api/v3/index.json
  [11]: https://odata-sug-lon.herokuapp.com/#/
- [12]: https://sitecore.myget.org/gallery
+ [12]: https://sitecore.myget.org/gallery/

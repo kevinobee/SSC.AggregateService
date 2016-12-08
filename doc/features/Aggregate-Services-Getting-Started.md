@@ -1,5 +1,9 @@
 # Getting started with Aggregate Services
 
+This quick start document outlines how to get started with the [SSC Aggregate Service][4] features introduced in [Sitecore 8.2][6]
+
+For details of the underlying ASP.NET features refer to the [Microsoft OData stack][5] documentation.
+
 ## Setting up an OData Services API
 
 ### Step 1: Create a Model class
@@ -76,3 +80,6 @@ Implement an `Sitecore.Services.Core.OData.Edm.IEdmModelBuilder` that describes 
  [1]: https://github.com/kevinobee/SSC.AggregateService/
  [2]: http://docs.sscaggregateservice.apiary.io/
  [3]: Aggregate-Services-Code-Examples.md
+ [4]: ../../README.md
+ [5]: http://odata.github.io/
+ [6]: https://dev.sitecore.net/Downloads/Sitecore_Experience_Platform.aspx
