@@ -4,10 +4,9 @@ using Sitecore.Services.Infrastructure.OData;
 
 namespace CustomService.Controllers
 {
-    public class TodoListController 
-        : ServiceBaseODataController<Todo>
+    public sealed class TodoListController : ODataControllerBase<Todo>
     {
-        public TodoListController(IReadOnlyEntityRepository<Todo> repository) 
+        public TodoListController(IReadWriteEntityRepository<Todo> repository) 
             : base(repository)
         {
         }
