@@ -241,7 +241,6 @@
     <Compile Include="Data\TodoRepository.cs" />
     <Compile Include="DependencyInjection\CustomServiceConfigurator.cs" />
     <Compile Include="Extensions\ServiceCollectionExtensions.cs" />
-    <Compile Include="Extensions\EntityIdentityExtensions.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\BookEntity.cs" />
     <Compile Include="Model\Customer.cs" />
