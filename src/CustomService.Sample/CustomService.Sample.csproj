@@ -211,6 +211,22 @@
     <Content Include="App_Config\Include\ZZZ-Development-Settings\Debug.log4net.config" />
     <Content Include="App_Config\Include\ZZZ-Development-Settings\DisableRazorPreCompilation.config" />
     <Content Include="App_Config\Include\ZZZ-Development-Settings\Disable.PathAnalyzer.WebApiInitializer.config" />
+    <Content Include="App_Config\Include\zzz\DataFolder.config" />
+    <Content Include="App_Config\Include\zzz\DisableEventQueue.config" />
+    <Content Include="App_Config\Include\zzz\InitializeSpeedBooster.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Core.Content.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Master.Content.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Master.FXM.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Master.List.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Master.Marketing.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Master.Social.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Master.Testing.ManualStrategy.config" />
+    <None Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Web.Content.ManualStrategy.config" />
+    <None Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Web.FXM.ManualStrategy.config" />
+    <None Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Web.Marketing.ManualStrategy.config" />
+    <None Include="App_Config\Include\zzz\Sitecore.ContentSearch.Lucene.Index.Web.Social.ManualStrategy.config" />
+    <Content Include="App_Config\Include\zzz\Sitecore.ContentSearch.Remove.config" />
+    <Content Include="App_Config\Include\zzz\UseServerSideRedirect.config" />
     <None Include="Properties\PublishProfiles\ssc.aggregate.pubxml" />
   </ItemGroup>
   <ItemGroup>
