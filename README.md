@@ -86,3 +86,4 @@ The [MIT license][7]
  [12]: https://waffle.io/kevinobee/SSC.AggregateService
  [13]: https://graphs.waffle.io/kevinobee/SSC.AggregateService/throughput.svg
  [14]: (https://waffle.io/kevinobee/SSC.AggregateService/metrics/throughput)
+ [15]: https://sitecore.myget.org/gallery
