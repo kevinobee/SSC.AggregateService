@@ -74,3 +74,4 @@ The [MIT license][7]
  [9]: https://www.nuget.org/packages/ 
  [10]: https://sitecore.myget.org/F/sc-packages/api/v3/index.json
  [11]: https://odata-sug-lon.herokuapp.com/#/
+ [12]: https://sitecore.myget.org/gallery
