@@ -9,7 +9,7 @@ namespace CustomService.Data
 {
     public sealed class TodoRepository : IReadWriteEntityRepository<Todo>
     {
-        private static readonly IList<Todo> TodoList = new[] { new Todo(), new Todo(), new Todo(), new Todo() };
+        private static readonly IList<Todo> TodoList = new List<Todo> { new Todo(), new Todo(), new Todo(), new Todo() };
 
         async Task<Todo> IReadOnlyEntityRepository<Todo>.GetById(string id)
         {
