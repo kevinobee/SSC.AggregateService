@@ -3,7 +3,7 @@
 [![Master Build status](https://ci.appveyor.com/api/projects/status/mnl4fm107yk34an4/branch/master?svg=true&passingText=master%20-%20OK&pendingText=master%20-%20building&failingText=master%20-%20Failed)](https://ci.appveyor.com/project/kevinobee/ssc-aggregateservice/branch/master)
 [![Develop Build status](https://ci.appveyor.com/api/projects/status/mnl4fm107yk34an4/branch/develop?svg=true&passingText=develop%20-%20OK&pendingText=develop%20-%20building&failingText=develop%20-%20Failed)](https://ci.appveyor.com/project/kevinobee/ssc-aggregateservice/branch/develop)
 
-[![Stories in Ready](https://badge.waffle.io/kevinobee/SSC.AggregateService.png?label=ready&title=Ready)](https://waffle.io/kevinobee/SSC.AggregateService)
+[![Stories in Ready](https://badge.waffle.io/kevinobee/SSC.AggregateService.png?label=ready&title=Ready)][12]
 
 A community repository that provides API documentation for the [Sitecore Services Client][6] Aggregate Service.
 
@@ -22,11 +22,28 @@ For further details refer to the [Aggregate Services Code Examples][4] documenta
 
 ## Online resources
 
+The following SSC Aggregate Service resources are available online:
+
+  - Code Examples
+
  - [Source code][1]
+
+    - [Aggregate Services Code Examples][4]
+
+ - Documentation
+
  - [Aggregate Service documentation][2]
+
  - [Getting started with Aggregate Services guide][3]
- - [Aggregate Services Code Examples][4]
+
+ - NuGet Packages
+
  - [SSC.AggregateService.Sample NuGet package][8]
+
+    - [Sitecore NuGet Package Gallery][15]
+
+ - Presentations
+
  - [Sitecore User Group Presentation Slides][11] London, 29th November 2016
 
 
@@ -85,5 +102,5 @@ The [MIT license][7]
  [11]: https://odata-sug-lon.herokuapp.com/#/
  [12]: https://waffle.io/kevinobee/SSC.AggregateService
  [13]: https://graphs.waffle.io/kevinobee/SSC.AggregateService/throughput.svg
- [14]: (https://waffle.io/kevinobee/SSC.AggregateService/metrics/throughput)
+ [14]: https://waffle.io/kevinobee/SSC.AggregateService/metrics/throughput
  [15]: https://sitecore.myget.org/gallery
