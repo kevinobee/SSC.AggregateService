@@ -76,6 +76,16 @@ To verify that the mongo database server is up and listening correctly load [htt
 ```
 
 
+## NuGet Feeds
+
+The NuGet feeds that provide the package depencies required to work with this project are defind in the [NuGet.config](../src/Build/NuGet/NuGet.config) file.
+
+```
+    <add key="nuget.org" value="http://www.nuget.org/api/v2/" />
+    <add key="SC.MyGet" value="https://sitecore.myget.org/F/sc-packages/api/v3/index.json" />
+```
+
+
 ## Command Line Build
 
 The project uses [MSBuild](https://msdn.microsoft.com/en-us/library/0k6kkbsd.aspx) for its build system.
