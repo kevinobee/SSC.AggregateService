@@ -63,7 +63,7 @@ Please take a look at the [Development Tooling][5] documentation for information
 
 You can see dashboard of all open issues and pull requests for the SSC.Aggregate project [here][12].
 
-## Throughput
+### Throughput
 
 [![Throughput Graph][13]][14]
 
