@@ -59,6 +59,13 @@ If you experience difficulties in restoring the Sitecore MyGet dependencies thes
 
 Please take a look at the [Development Tooling][5] documentation for information on how the GIT repos and command line build operates.
 
+## Dashboard
+
+You can see dashboard of all open issues and pull requests for the SSC.Aggregate project [here][12].
+
+### Throughput
+
+[![Throughput Graph][13]][14]
 
 ## License
 
@@ -76,3 +83,6 @@ The [MIT license][7]
  [9]: https://www.nuget.org/packages/ 
  [10]: https://sitecore.myget.org/F/sc-packages/api/v3/index.json
  [11]: https://odata-sug-lon.herokuapp.com/#/
+ [12]: https://waffle.io/kevinobee/SSC.AggregateService
+ [13]: https://graphs.waffle.io/kevinobee/SSC.AggregateService/throughput.svg
+ [14]: (https://waffle.io/kevinobee/SSC.AggregateService/metrics/throughput)
